@@ -1,12 +1,21 @@
 package tn.esprit.spring.project.service;
 
+import tn.esprit.spring.project.models.OffreEmploi;
 import java.util.List;
 
-import tn.esprit.spring.project.models.OffreEmploi;
-
 public interface IOffreEmploiService {
-    OffreEmploi createOffre(OffreEmploi offreEmploi);
+
+    OffreEmploi ajouterOffre(OffreEmploi offre);
+
     List<OffreEmploi> getAllOffres();
+
     OffreEmploi getOffreById(Long id);
-    void deleteOffre(Long id);
+
+    OffreEmploi modifierOffre(Long id, OffreEmploi nouvelleOffre);
+
+    void supprimerOffre(Long id);
+
+    List<OffreEmploi> rechercherParTitre(String titre);
+
+    List<OffreEmploi> rechercherParLocalisation(String localisation);
 }

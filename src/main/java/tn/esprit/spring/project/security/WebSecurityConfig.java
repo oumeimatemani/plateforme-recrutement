@@ -72,6 +72,7 @@ public class WebSecurityConfig {
                     .requestMatchers("/api/auth/deleteUser/**").hasRole("ADMIN") 
                     .requestMatchers("/candidature/**").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/entretiens/**").hasAnyRole("ADMIN", "HR")
+                    .requestMatchers(HttpMethod.PUT, "/offres/**").hasAnyRole("ADMIN", "HR")
                     .anyRequest().authenticated()
             );
 

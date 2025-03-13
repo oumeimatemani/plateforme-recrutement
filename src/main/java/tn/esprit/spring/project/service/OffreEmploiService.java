@@ -11,27 +11,44 @@ import tn.esprit.spring.project.repository.OffreEmploiRepository;
 @Service
 public class OffreEmploiService implements IOffreEmploiService {
 
-    @Autowired
-    private OffreEmploiRepository offreEmploiRepository;
+   @Autowired
+    private OffreEmploiRepository OffreEmploiRepository;
 
-    @Override
-    public OffreEmploi createOffre(OffreEmploi offreEmploi) {
-        return offreEmploiRepository.save(offreEmploi);
+    public OffreEmploi ajouterOffre(OffreEmploi offre) {
+        return OffreEmploiRepository.save(offre);
     }
 
-    @Override
     public List<OffreEmploi> getAllOffres() {
-        return offreEmploiRepository.findAll();
+        return OffreEmploiRepository.findAll();
     }
 
-    @Override
     public OffreEmploi getOffreById(Long id) {
-        return offreEmploiRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Offre non trouvée"));
+        return OffreEmploiRepository.findById(id).orElseThrow(() -> new RuntimeException("Offre non trouvée"));
     }
 
-    @Override
-    public void deleteOffre(Long id) {
-        offreEmploiRepository.deleteById(id);
+    public OffreEmploi modifierOffre(Long id, OffreEmploi nouvelleOffre) {
+        OffreEmploi offreExistante = getOffreById(id);
+        offreExistante.setTitre(nouvelleOffre.getTitre());
+        offreExistante.setDescription(nouvelleOffre.getDescription());
+        offreExistante.setEntreprise(nouvelleOffre.getEntreprise());
+        offreExistante.setLocalisation(nouvelleOffre.getLocalisation());
+        offreExistante.setSalaire(nouvelleOffre.getSalaire());
+        offreExistante.setTypeContrat(nouvelleOffre.getTypeContrat());
+        offreExistante.setCompetences(nouvelleOffre.getCompetences());
+        offreExistante.setDateExpiration(nouvelleOffre.getDateExpiration());
+
+        return OffreEmploiRepository.save(offreExistante);
+    }
+
+    public void supprimerOffre(Long id) {
+        OffreEmploiRepository.deleteById(id);
+    }
+
+    public List<OffreEmploi> rechercherParTitre(String titre) {
+        return OffreEmploiRepository.findByTitreContainingIgnoreCase(titre);
+    }
+
+    public List<OffreEmploi> rechercherParLocalisation(String localisation) {
+        return OffreEmploiRepository.findByLocalisationContainingIgnoreCase(localisation);
     }
 }

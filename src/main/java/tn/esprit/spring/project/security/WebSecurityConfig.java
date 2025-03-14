@@ -59,28 +59,31 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource())) // Activer CORS 
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth ->
+            .authorizeHttpRequests(auth -> 
                 auth.requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/api/test/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/auth/signup", "/api/auth/signin" , "/error").permitAll() // Allow signup without authentication
+                    .requestMatchers(HttpMethod.POST, "/api/auth/signup", "/api/auth/signin", "/error").permitAll()
                     .requestMatchers("/api/auth/AllUsers").permitAll()
                     .requestMatchers("/api/auth/updateRole/**").hasRole("ADMIN")
-                    .requestMatchers("/api/auth/deleteUser/**").hasRole("ADMIN") 
+                    .requestMatchers("/api/auth/deleteUser/**").hasRole("ADMIN")
                     .requestMatchers("/candidature/**").permitAll()
+                    // Autoriser l'accès à Camunda sans authentification
+                    .requestMatchers("/camunda/**", "/camunda/app/**", "/engine-rest/**", "/app/**").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/entretiens/**").hasAnyRole("ADMIN", "HR")
                     .requestMatchers(HttpMethod.PUT, "/offres/**").hasAnyRole("ADMIN", "HR")
                     .anyRequest().authenticated()
             );
-
+    
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
+    
         return http.build();
     }
+    
 
     // Configuration CORS intégrée
     @Bean

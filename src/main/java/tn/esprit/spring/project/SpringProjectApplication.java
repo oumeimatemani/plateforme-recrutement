@@ -2,8 +2,10 @@ package tn.esprit.spring.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableJpaRepositories(basePackages = "tn.esprit.spring.project.repository")
 public class SpringProjectApplication {
 
 	public static void main(String[] args) {
